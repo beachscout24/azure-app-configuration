@@ -31,13 +31,13 @@ public class ConfigurationController : ControllerBase
 
     private string GetSecret()
     {
-        var keyVaultURL = _configuration.GetSection("KeyVault:KeyVaultURL");
-        var keyVaultClientId = _configuration.GetSection("KeyVault:ClientId");
-        var keyVaultClientSecret = _configuration.GetSection("KeyVault:ClientSecret");
-        var keyVaultDirectoryID = _configuration.GetSection("KeyVault:DirectoryID");
+        var keyVaultURL = Settings.KeyVaultURL;
+        var keyVaultClientId = Settings.ClientId;
+        var keyVaultClientSecret = Settings.ClientSecret;
+        var keyVaultDirectoryID = Settings.DirectoryID;
 
-        var credential = new ClientSecretCredential(keyVaultDirectoryID.Value!.ToString(), keyVaultClientId.Value!.ToString(), keyVaultClientSecret.Value!.ToString());
-        var client = new SecretClient(new Uri(keyVaultURL.Value!.ToString()), credential);
+        var credential = new ClientSecretCredential(keyVaultDirectoryID, keyVaultClientId, keyVaultClientSecret);
+        var client = new SecretClient(new Uri(keyVaultURL), credential);
 
         var secret = client.GetSecret("VictoriasSecret").Value.Value.ToString();
 
